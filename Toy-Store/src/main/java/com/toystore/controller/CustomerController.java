@@ -1,6 +1,7 @@
 package com.toystore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import com.toystore.entity.*;
@@ -15,29 +16,71 @@ public class CustomerController {
 	CustomerService customerService;	
 
 	@GetMapping //localhost:8080/api/customer
-	public @ResponseBody Iterable<Customer> getAllCustomer() {
-		return customerService.findAllCustomers();
+	@ResponseBody 
+	//ResponseEntity configura la respuesta http
+	public ResponseEntity<Iterable<Customer>> getAllCustomer() {		
+		return new ResponseEntity<Iterable<Customer>>
+			(customerService.findAllCustomers(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}") //localhost:8080/api/customer/id
-	public @ResponseBody Customer getCustomerById(@PathVariable("id") Long id) {
-		return customerService.findCustomerById(id);
+	@ResponseBody
+	public ResponseEntity<?> getCustomerById(@PathVariable("id") Long id) {
+		try {
+			return new ResponseEntity<Customer>(customerService.findCustomerById(id), HttpStatus.OK);
+		}
+		catch (IllegalStateException e){
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PostMapping //localhost:8080/api/customer
-	public @ResponseBody Customer addNewCustomer(@RequestBody Customer customer) {
-		//Se guarda el cliente y lo retorna con el id asignado.
-		return customerService.saveCustomer(customer);
+	@ResponseBody
+	public ResponseEntity<?> addNewCustomer(@RequestBody Customer customer) {
+		try {
+			//Se guarda el cliente y lo retorna con el id asignado.
+			return new ResponseEntity<Customer>(customerService.saveCustomer(customer), HttpStatus.CREATED);
+		}
+		catch (IllegalStateException e){
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+					
 	}
 	
-	@PutMapping //localhost:8080/api/customer
-	public @ResponseBody Customer updateCustomer(@RequestBody Customer customer) {		
-		return customerService.updateCustomer(customer);
+	@PutMapping
+	@ResponseBody
+	public ResponseEntity<?> updateCustomer(@RequestBody Customer customer) {	
+		try {
+			
+			return new ResponseEntity<Customer>(customerService.updateCustomer(customer), HttpStatus.OK);
+		}
+		catch (IllegalStateException e){
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}			
 	}
 	
 	@DeleteMapping("/{id}") //localhost:8080/api/customer/id
-	public @ResponseBody String deleteCustomer(@PathVariable("id") Long id) {
-		return customerService.deleteCustomerById(id);		
+	@ResponseBody
+	public ResponseEntity<?> deleteCustomer(@PathVariable("id") Long id) {
+		try {			
+			return new ResponseEntity<String>(customerService.deleteCustomerById(id), HttpStatus.OK);
+		}
+		catch (IllegalStateException e){
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}		
+	
 	}
 	
 }

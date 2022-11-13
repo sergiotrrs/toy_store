@@ -8,7 +8,7 @@ import com.toystore.repository.*;
 
 @Service
 public class CustomerService implements ICustomerService {
-
+	
 	@Autowired
 	CustomerRepository customerRepository;
 
@@ -41,7 +41,13 @@ public class CustomerService implements ICustomerService {
 	}
 
 	@Override
-	public Customer saveCustomer(Customer customer) {
+	public Customer saveCustomer(Customer customer) throws Exception {	
+		customer.setIsActive(true);
+		if (!(customer.getFirstName().length() < Customer.FIRST_NAME_MAX_LENGTH))			
+			throw new IllegalStateException("Name length is greater than "+ Customer.FIRST_NAME_MAX_LENGTH);
+		else if(!(customer.getLastName().length() < Customer.LASTNAME_MAX_LENGTH))			
+			throw new IllegalStateException("Lastname length is greater than "+ Customer.LASTNAME_MAX_LENGTH);
+		
 		return customerRepository.save(customer);
 	}
 	
@@ -51,20 +57,17 @@ public class CustomerService implements ICustomerService {
 		customerInDatabase.setFirstName(customer.getFirstName());
 		customerInDatabase.setLastName(customer.getLastName());
 		customerInDatabase.setAvatar(customer.getAvatar());
-		customerInDatabase.setAddress(customer.getAddress());				
+		customerInDatabase.setAddress(customer.getAddress());
+		customer.setIsActive(true);
 		return customerRepository.save(customerInDatabase);		
 	}
 	
 	@Override
 	public String deleteCustomerById(Long id) throws IllegalStateException {
-		if(!existsCustomerById(id))		
-			new IllegalStateException("The user with id " + id + " does not exist");
-		customerRepository.deleteById(id);
-		return "The customer has been deleted";
-		
-		
-		
-
+		Customer customerInDatabase = findCustomerById(id);
+		customerInDatabase.setIsActive(false);		
+		customerRepository.save(customerInDatabase);
+		return "The customer has been deleted";						
 	}
 
 

@@ -14,7 +14,7 @@ public interface ICustomerService {
 		
 		public boolean existsCustomerByEmail(String email);
 		
-		public Customer saveCustomer(Customer customer);
+		public Customer saveCustomer(Customer customer) throws Exception;
 		
 		public Customer updateCustomer(Customer customer);
 		
