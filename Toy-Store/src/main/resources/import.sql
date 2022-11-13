@@ -2,11 +2,11 @@ INSERT INTO `product`(`name`,`price`) VALUES ('Lego Batman' ,'600.25');
 INSERT INTO `product`(`name`,`price`) VALUES ('Microscopio Mi Alegría' ,'500.25');
 INSERT INTO `product`(`name`,`price`) VALUES ('Balón Siuuu' ,'1000.15');
 
-INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`) VALUES ('Patricio','Estrella','mane@email.com','https://randomuser.me/api/portraits/men/30.jpg');
-INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`) VALUES ('Selena','Gómez','mane@email.com','https://randomuser.me/api/portraits/women/26.jpg');
-INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`) VALUES ('Benito','Bodoque','mane@email.com','https://randomuser.me/api/portraits/men/38.jpg');
-INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`) VALUES ('Edna','Krabappel','mane@email.com','https://randomuser.me/api/portraits/women/28.jpg');
-INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`) VALUES ('Cristiano','Ronado','mane@email.com','https://randomuser.me/api/portraits/men/20.jpg');
+INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`, `password`) VALUES ('Patricio','Estrella','patricio@email.com','https://randomuser.me/api/portraits/men/30.jpg', '123');
+INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`, `password`) VALUES ('Selena','Gómez','selena@email.com','https://randomuser.me/api/portraits/women/26.jpg', '123');
+INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`, `password`) VALUES ('Benito','Bodoque','benito@email.com','https://randomuser.me/api/portraits/men/38.jpg', '123');
+INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`, `password`) VALUES ('Edna','Krabappel','edna@email.com','https://randomuser.me/api/portraits/women/28.jpg', '123');
+INSERT INTO `customer` (`first_name`,`last_name`,`email`,`avatar`, `password`) VALUES ('Cristiano','Ronado','cristiano@email.com','https://randomuser.me/api/portraits/men/20.jpg', '123');
 
 INSERT INTO `shopping_order`(`customer_id`,`created_at`) VALUES ('1' ,'2022-11-01 06:25:31');
 INSERT INTO `shopping_order`(`customer_id`,`created_at`) VALUES ('2' ,'2022-05-01 12:25:41');

@@ -1,9 +1,7 @@
 package com.toystore.entity;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -21,10 +19,11 @@ public class Customer {
 	private String lastName;
 	@Column(name="avatar", length=150)
 	private String avatar;
-	@Column(name="email", length=150)
+	@NotNull 
+	@Column(name="email", length=150, updatable=false)	
 	private String email;
-	@Column(name="password", length=150)
-	@JsonIgnore
+	@NotNull 
+	@Column(name="password", length=150, updatable=false)	
 	private String password;
 	@Column(name="address", length=200)
 	private String address;
