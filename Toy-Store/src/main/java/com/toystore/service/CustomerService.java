@@ -1,9 +1,12 @@
 package com.toystore.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.toystore.entity.*;
+import com.toystore.entity.dto.CustomerDto;
 import com.toystore.repository.*;
 
 @Service
@@ -13,21 +16,23 @@ public class CustomerService implements ICustomerService {
 	CustomerRepository customerRepository;
 
 	@Override
-	public Iterable<Customer> findAllCustomers() {
-		return customerRepository.findAll();
+	public List<CustomerDto> findAllCustomers() throws Exception {		
+//		List<Customer> customers = (List<Customer>) customerRepository.findAll();			
+		List<Customer> customers = (List<Customer>) customerRepository.findByIsActive(true);			
+		return convertAllCustomersToDto(customers);
 	}
 
 	@Override
-	public Customer findCustomerById(Long id) {
+	public Customer findCustomerById(Long id) throws Exception {		
 		return customerRepository.findById(id)
 				.orElseThrow(() -> 
 				new IllegalStateException
-				("The user with id " + id + " does not exist"));
+				("The user with id " + id + " does not exist"));				
 	}
 
 	@Override
-	public Customer findCustomerByEmail(Customer customer) {
-		return customerRepository.findByEmail(customer.getEmail());
+	public CustomerDto findCustomerByEmail(Customer customer) {
+		return convertCustomerToDto(customerRepository.findByEmail(customer.getEmail())); 
 	}
 	
 	@Override
@@ -41,33 +46,54 @@ public class CustomerService implements ICustomerService {
 	}
 
 	@Override
-	public Customer saveCustomer(Customer customer) throws Exception {	
-		customer.setIsActive(true);
+	public CustomerDto saveCustomer(Customer customer) throws Exception {					
 		if (!(customer.getFirstName().length() < Customer.FIRST_NAME_MAX_LENGTH))			
 			throw new IllegalStateException("Name length is greater than "+ Customer.FIRST_NAME_MAX_LENGTH);
 		else if(!(customer.getLastName().length() < Customer.LASTNAME_MAX_LENGTH))			
 			throw new IllegalStateException("Lastname length is greater than "+ Customer.LASTNAME_MAX_LENGTH);
-		
-		return customerRepository.save(customer);
+				
+		customer.setIsActive(true);
+		return convertCustomerToDto(customerRepository.save(customer));		
 	}
 	
 	@Override
-	public Customer updateCustomer(Customer customer) throws IllegalStateException {			
+	public CustomerDto updateCustomer(Customer customer) throws Exception {			
 		Customer customerInDatabase = findCustomerById(customer.getCustomerId());		
 		customerInDatabase.setFirstName(customer.getFirstName());
 		customerInDatabase.setLastName(customer.getLastName());
 		customerInDatabase.setAvatar(customer.getAvatar());
 		customerInDatabase.setAddress(customer.getAddress());
-		customer.setIsActive(true);
-		return customerRepository.save(customerInDatabase);		
+		customerInDatabase.setIsActive(true);				
+		return saveCustomer(customerInDatabase);	
 	}
 	
 	@Override
-	public String deleteCustomerById(Long id) throws IllegalStateException {
+	public String deleteCustomerById(Long id) throws Exception {
 		Customer customerInDatabase = findCustomerById(id);
 		customerInDatabase.setIsActive(false);		
 		customerRepository.save(customerInDatabase);
 		return "The customer has been deleted";						
+	}
+
+	@Override
+	public CustomerDto convertCustomerToDto(Customer customer) {
+		CustomerDto customerDto = new CustomerDto();		
+		customerDto.setCustomerId(customer.getCustomerId());
+		customerDto.setFirstName(customer.getFirstName());
+		customerDto.setLastName(customer.getLastName());
+		customerDto.setEmail(customer.getEmail());
+		customerDto.setAddress(customer.getAddress());
+		customerDto.setAvatar(customer.getAvatar());						
+		return customerDto;
+	}
+
+	@Override
+	public List<CustomerDto> convertAllCustomersToDto(List<Customer> customers) {
+		List<CustomerDto> customersDto = new ArrayList<CustomerDto>(); 
+		for (Customer customer: customers ){
+			customersDto.add( convertCustomerToDto(customer));
+		}
+		return customersDto;
 	}
 
 

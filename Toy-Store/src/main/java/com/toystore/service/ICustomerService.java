@@ -1,23 +1,29 @@
 package com.toystore.service;
 
+import java.util.List;
+
 import com.toystore.entity.Customer;
+import com.toystore.entity.dto.*;
 
 public interface ICustomerService {
 	
-		public Iterable<Customer> findAllCustomers();
+		public List<CustomerDto> findAllCustomers() throws Exception;
 		
-		public Customer findCustomerById(Long id);
+		public Customer findCustomerById(Long id)throws Exception;
 		
-		public Customer findCustomerByEmail(Customer customer);		
+		public CustomerDto findCustomerByEmail(Customer customer);		
 		
 		public boolean existsCustomerById(Long id);
 		
 		public boolean existsCustomerByEmail(String email);
 		
-		public Customer saveCustomer(Customer customer) throws Exception;
+		public CustomerDto saveCustomer(Customer customer) throws Exception;
 		
-		public Customer updateCustomer(Customer customer);
+		public CustomerDto updateCustomer(Customer customer) throws Exception;
 		
-		public String deleteCustomerById(Long id);
+		public String deleteCustomerById(Long id) throws Exception;
 		
+		public CustomerDto convertCustomerToDto(Customer customer);
+		
+		public List<CustomerDto> convertAllCustomersToDto(List<Customer> customers);
 }
