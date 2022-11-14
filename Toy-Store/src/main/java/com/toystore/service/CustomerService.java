@@ -14,7 +14,8 @@ public class CustomerService implements ICustomerService {
 
 	@Override
 	public Iterable<Customer> findAllCustomers() {
-		return customerRepository.findAll();
+		//return customerRepository.findAll();
+		return customerRepository.findByIsActive(true);
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class CustomerService implements ICustomerService {
 		customerInDatabase.setLastName(customer.getLastName());
 		customerInDatabase.setAvatar(customer.getAvatar());
 		customerInDatabase.setAddress(customer.getAddress());
-		customer.setIsActive(true);
+		customerInDatabase.setIsActive(true);
 		return customerRepository.save(customerInDatabase);		
 	}
 	
