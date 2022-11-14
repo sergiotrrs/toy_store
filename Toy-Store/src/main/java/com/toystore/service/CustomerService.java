@@ -18,7 +18,8 @@ public class CustomerService implements ICustomerService {
 	@Override
 	public List<CustomerDto> findAllCustomers() throws Exception {		
 //		List<Customer> customers = (List<Customer>) customerRepository.findAll();			
-		List<Customer> customers = (List<Customer>) customerRepository.findByIsActive(true);			
+//		List<Customer> customers = (List<Customer>) customerRepository.findByIsActive(true);			
+		List<Customer> customers = (List<Customer>) customerRepository.findByIsActiveOrderByLastNameAsc(true);			
 		return convertAllCustomersToDto(customers);
 	}
 
