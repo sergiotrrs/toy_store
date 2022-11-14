@@ -24,10 +24,13 @@ public class CustomerService implements ICustomerService {
 
 	@Override
 	public Customer findCustomerById(Long id) throws Exception {		
-		return customerRepository.findById(id)
+		Customer customer = customerRepository.findById(id)
 				.orElseThrow(() -> 
 				new IllegalStateException
-				("The user with id " + id + " does not exist"));				
+				("The user with id " + id + " does not exist"));
+		if (!customer.getIsActive())
+			throw new IllegalStateException("The user with id " + id + " does not active");
+		return customer;
 	}
 
 	@Override
