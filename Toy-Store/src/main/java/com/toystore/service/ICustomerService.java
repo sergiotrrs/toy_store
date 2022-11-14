@@ -11,7 +11,7 @@ public interface ICustomerService {
 		
 		public Customer findCustomerById(Long id)throws Exception;
 		
-		public CustomerDto findCustomerByEmail(Customer customer);		
+		public CustomerDto findCustomerByEmail(AuthCustomer authCustomer);		
 		
 		public boolean existsCustomerById(Long id);
 		

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.toystore.entity.*;
+import com.toystore.entity.dto.AuthCustomer;
 import com.toystore.entity.dto.CustomerDto;
 import com.toystore.repository.*;
 
@@ -35,8 +36,15 @@ public class CustomerService implements ICustomerService {
 	}
 
 	@Override
-	public CustomerDto findCustomerByEmail(Customer customer) {
-		return convertCustomerToDto(customerRepository.findByEmail(customer.getEmail())); 
+	public CustomerDto findCustomerByEmail(AuthCustomer authCustomer) {
+		Customer customer = customerRepository.findByEmail(authCustomer.getEmail())
+				.orElseThrow( () ->
+				new IllegalStateException
+				("The email " + authCustomer.getEmail() + "does not exists"));
+		if (!customer.getPassword().equals(authCustomer.getPassword()))
+			throw new IllegalStateException("Wrong password");
+			
+		return convertCustomerToDto(customer);
 	}
 	
 	@Override
