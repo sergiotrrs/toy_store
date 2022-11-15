@@ -37,10 +37,10 @@ public class CustomerService implements ICustomerService {
 
 	@Override
 	public CustomerDto findCustomerByEmail(AuthCustomer authCustomer) {
-		Customer customer = customerRepository.findByEmail(authCustomer.getEmail())
+		Customer customer = customerRepository.findByEmail(authCustomer.getUsername())
 				.orElseThrow( () ->
 				new IllegalStateException
-				("The email " + authCustomer.getEmail() + "does not exists"));
+				("The email " + authCustomer.getUsername() + "does not exists"));
 		if (!customer.getPassword().equals(authCustomer.getPassword()))
 			throw new IllegalStateException("Wrong password");
 			
