@@ -19,14 +19,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
 			.and()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/api/customer/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/api/customer").hasRole("USER")
-				.antMatchers(HttpMethod.PUT, "/api/customer").hasRole("USER") //.roles("USER","ADMIN")
-				.antMatchers(HttpMethod.DELETE, "/api/customer/**").hasRole("ADMIN")				
+				//.antMatchers(HttpMethod.POST, "/api/customer").hasRole("USER")
+				//.antMatchers(HttpMethod.PUT, "/api/customer").hasRole("USER") //.roles("USER","ADMIN")
+				//.antMatchers(HttpMethod.DELETE, "/api/customer/**").hasRole("ADMIN")				
 			.anyRequest().authenticated() //.permitAll()
 			.and()
 			.addFilterBefore(new LoginFilter("/login", authenticationManager()),
 					UsernamePasswordAuthenticationFilter.class)//Actuará este filtro sobre /login y esto nos da el token JWT
-			//.addFilterBefore(null, null) //REvisará si el token es correcto
+			.addFilterBefore(new JwtFilter(),UsernamePasswordAuthenticationFilter.class) //Revisará si el token es correcto
 			.csrf().disable();							
 	}
 	
