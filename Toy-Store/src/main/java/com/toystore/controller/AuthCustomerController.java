@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import com.toystore.entity.dto.*;
 import com.toystore.service.*;
 
-@RestController
-@RequestMapping("/login")
-@CrossOrigin(origins="*")
+//@RestController
+//@RequestMapping("/login")
+//@CrossOrigin(origins="*")
 public class AuthCustomerController {
 
 	@Autowired
