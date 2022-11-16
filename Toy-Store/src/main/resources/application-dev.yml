@@ -1,0 +1,18 @@
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ThePassword
+    url: jdbc:mysql://localhost:3306/toy_store?useSLL=false&serverTimezone=UTC&useLegacyDateTimeCode=false
+    username: springuser
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
